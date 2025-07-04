@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String   // (armazenar o hash, não a senha direta!)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map("users")
+}
+
+// Duv (representa o Documento Único Virtual)
+model Duv { 
+  id          String      @id @default(uuid())
+  number      String      @unique
+  travel_date DateTime
+  vessel_id   String
+  vessel      Vessel      @relation(fields: [vessel_id], references: [id])
+  passengers  Passenger[] // relação 1:N
+
+  created_at  DateTime?   @default(now())
+  updated_at  DateTime?   @default(now())
+
+  @@map("duvs")
+}
+
+// Vessel (o navio)
+model Vessel {
+  id        String   @id @default(uuid())
+  name      String
+  flag      String
+  image     String
+  duvs      Duv[] // 1:N (um navio pode ter várias DUVs)
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("vessels")
+}
+
+// Passenger (pessoa embarcada)
+model Passenger {
+  id            String   @id @default(uuid())
+  name          String
+  nationality   String
+  photo         String
+  type          PassengerType
+  sid_document  String? // só obrigatório se for Tripulante
+  duv_id        String
+  duv           Duv      @relation(fields: [duv_id], references: [id])
+
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @default(now())
+
+  @@map("passengers")
+}
+
+enum PassengerType {
+  PASSAGEIRO
+  TRIPULANTE
+}
