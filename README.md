@@ -6,13 +6,6 @@ Este é um projeto fullstack desenvolvido como parte de um desafio técnico. O s
 
 ## 🛠️ Tecnologias Utilizadas
 
-### Frontend
-- [React.js](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [SCSS (Sass)](https://sass-lang.com/)
-- Rotas privadas com `React Router`
-- Controle de autenticação com `JWT`
-
 ### Backend
 - [Node.js](https://nodejs.org/)
 - [Express.js](https://expressjs.com/)
